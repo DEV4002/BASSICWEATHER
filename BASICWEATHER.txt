@@ -1,0 +1,64 @@
+from tkinter import*
+import requests
+
+def get_weather(api_key, location):
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}&units=metric"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        temp = data['main']['temp']
+        humidity = data['main']['humidity']
+        weather_description = data['weather'][0]['description']
+        result = f"Location: {location}."
+        result1 =f"Temperature: {temp}°C."
+        result2 = f"Humidity: {humidity}%."
+        result3=f"Weather: {weather_description}."
+        a.set(result)
+        b.set(result1)
+        c.set(result2)
+        d.set(result3)
+    else:
+        result = "Error: Unable to fetch weather data"
+    return result
+
+def show_weather():
+    location = h3.get()
+    api_key = "0bf86e774e587c4cf21cf82831873379"
+    weather_info = get_weather(api_key, location)
+    #result_label.config(text=weather_info)
+
+# Set up the GUI
+w= Tk()
+w.title("Weather App")
+a= StringVar()
+b=StringVar()
+c= StringVar()
+d=StringVar()
+
+h1 = Label(w, text="Weather detection interface",font=('arial',30,'bold'),relief="raise",bg="aqua",width=50, height=3)
+h1.grid(row =1, column=1,columnspan=7)
+########################################################################################
+h2= Label(w, text="Enter City name or ZIP code:",font=('arial',20,'bold'),relief="raise",bg="aqua",width=40, height=3)
+h2.grid(row =2, column=1,columnspan=6)
+########################################################################################
+h3 = Entry(w,font=('arial',25,'bold'),relief="solid",bg="khaki1")
+h3.grid(row = 3,column= 2,columnspan=4)
+######################################################################
+h4 = Button(w,text="Get Weather",font=('arial',10,'bold'),bg="red",command=show_weather,borderwidth=5,width=25, height=2)
+h4.grid(row=4,column=2,columnspan=4)
+######################################################################
+h5 = Entry(w,font=('arial',30,'bold'),relief="solid",bg="darkolivegreen1",textvar=a)
+h5.grid(row = 5,column= 2,columnspan=4)
+###############################################################################
+h6 = Entry(w,font=('arial',30,'bold'),relief="solid",bg="darkolivegreen1",textvar=b)
+h6.grid(row = 6,column= 2,columnspan=4)
+##################################################################
+h7 = Entry(w,font=('arial',30,'bold'),relief="solid",bg="darkolivegreen1" ,textvar=c)
+h7.grid(row = 7,column= 2,columnspan=4)
+#####################################################################
+h8 = Entry(w,font=('arial',30,'bold'),relief="solid",bg="darkolivegreen1" ,textvar=d)
+h8.grid(row = 8,column= 2,columnspan=4)
+#####################################################################
+
+
+w.mainloop()
